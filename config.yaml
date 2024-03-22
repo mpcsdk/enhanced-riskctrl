@@ -1,0 +1,53 @@
+server:
+  name: "enhanced-riskctrl"
+  address:     ":8005"
+  workId: 1
+  cpuCore: 2
+  openapiPath: "/api.json"
+  swaggerPath: "/swagger"
+
+jaegerUrl: "127.0.0.1:6831"
+
+logger:
+  level : "all"
+  stdout: true 
+  rotateExpire: "1d"
+  path: "./"
+
+userTokenUrl: "https://auth-dev.mixmarvel-sdk.com/info"
+nrpc:
+  natsUrl: "127.0.0.1:4222,127.0.0.1:4211"
+database:
+  default:
+  - link: "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced-riskctrl"
+    role: "master"
+  - link: "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced-riskctrl"
+    role: "slave"
+
+
+cache:
+  apiInterval: 1
+  dbCacheDuration: 100
+
+Duration: 100
+
+
+# redis 
+redis:
+  default:
+    address: 127.0.0.1:6379
+    db:      1
+  cache:
+    address: 127.0.0.1:6379
+    db:          2
+
+userToken: "https://auth-dev.mixmarvel-sdk.com/info"
+
+txdatarpc: "http://desktopuser:80041"
+
+gfcli:
+  gen:
+    dao:
+    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/syncChain"
+      tables:   "chain_data"
+      jsonCase: "CamelLower"
