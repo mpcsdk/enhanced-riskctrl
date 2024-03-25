@@ -45,7 +45,6 @@ redis:
 
 userToken: "https://auth-dev.mixmarvel-sdk.com/info"
 
-txdatarpc: "http://desktopuser:80041"
 
 gfcli:
   gen:

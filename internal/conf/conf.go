@@ -8,7 +8,6 @@ import (
 )
 
 type Cache struct {
-	ApiInterval     int `json:"apiInterval" v:"required|min:1"`
 	DBCacheDuration int `json:"dbCacheDuration" v:"required|min:1"`
 }
 
@@ -35,7 +34,6 @@ type Cfg struct {
 	Jaeger       *Jaeger `json:"jaeger" v:"required"`
 	JaegerUrl    string  `json:"jaegerUrl" v:"required"`
 	Nrpc         *Nrpcfg `json:"nrpc" v:"required"`
-	Txdatarpc    string  `json:"txdatarpc" v:"required"`
 	UserTokenUrl string  `json:"userTokenUrl" v:"required"`
 }
 
