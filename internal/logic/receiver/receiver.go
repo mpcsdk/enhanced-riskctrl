@@ -63,17 +63,22 @@ func new() *sReceiver {
 		tx := &entity.ChainData{}
 		json.Unmarshal(msg.Data(), tx)
 		//based db
-		mpcdao.InsertTx(ctx, tx)
-		g.Log().Debug(ctx, "insertdb :", tx)
-		///aggval
-		err := s.aggTx(ctx, AggKey(tx.ChainId, tx.FromAddr, tx.Contract), tx)
+		err := mpcdao.InsertTx(ctx, tx)
 		if err != nil {
-			g.Log().Warning(ctx, "agg tx:", tx, ", err:", err)
-		}
-		g.Log().Debug(ctx, "agg tx:", tx)
-		//
-		msg.Ack()
+			g.Log().Error(ctx, "insertdb :", tx, ", err:", err)
+		} else {
+			g.Log().Debug(ctx, "insertdb :", tx)
 
+			///aggval
+			err := s.aggTx(ctx, AggKey(tx.ChainId, tx.FromAddr, tx.Contract), tx)
+			if err != nil {
+				g.Log().Warning(ctx, "agg tx:", tx, ", err:", err)
+			}
+			g.Log().Debug(ctx, "agg tx:", tx)
+			//
+			msg.Ack()
+
+		}
 	})
 
 	///
