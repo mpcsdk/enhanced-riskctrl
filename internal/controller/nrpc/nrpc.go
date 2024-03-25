@@ -2,11 +2,11 @@ package nrpc
 
 import (
 	"context"
-	"enhanced-riskctrl/api/dataRiskCtrl"
-	iquery "enhanced-riskctrl/api/query"
-	v1 "enhanced-riskctrl/api/query/v1"
-	"enhanced-riskctrl/internal/conf"
-	"enhanced-riskctrl/internal/controller/query"
+	"enhanced_riskctrl/api/dataRiskCtrl"
+	iquery "enhanced_riskctrl/api/query"
+	v1 "enhanced_riskctrl/api/query/v1"
+	"enhanced_riskctrl/internal/conf"
+	"enhanced_riskctrl/internal/controller/query"
 
 	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/mpcsdk/mpcCommon/mq"

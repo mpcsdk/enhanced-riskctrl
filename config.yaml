@@ -1,5 +1,5 @@
 server:
-  name: "enhanced-riskctrl"
+  name: "enhanced_riskctrl"
   address:     ":8005"
   workId: 1
   cpuCore: 2
@@ -21,9 +21,9 @@ nrpc:
   natsUrl: "127.0.0.1:4222,127.0.0.1:4211"
 database:
   default:
-  - link: "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced-riskctrl"
+  - link: "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced_riskctrl"
     role: "master"
-  - link: "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced-riskctrl"
+  - link: "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced_riskctrl"
     role: "slave"
 
 

@@ -3,8 +3,8 @@ package receiver
 import (
 	"context"
 	"encoding/json"
-	"enhanced-riskctrl/internal/conf"
-	"enhanced-riskctrl/internal/service"
+	"enhanced_riskctrl/internal/conf"
+	"enhanced_riskctrl/internal/service"
 	"fmt"
 
 	"github.com/gogf/gf/v2/frame/g"

@@ -7,7 +7,7 @@ package query
 import (
 	"context"
 	
-	"enhanced-riskctrl/api/query/v1"
+	"enhanced_riskctrl/api/query/v1"
 )
 
 type IQueryV1 interface {

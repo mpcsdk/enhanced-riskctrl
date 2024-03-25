@@ -3,9 +3,9 @@
 ## init db
 
 ```
-psql   -U postgres -h localhost -p 5432 -c "create database enhanced-riskctr"
+psql   -U postgres -h localhost -p 5432 -c "create database enhanced_riskctrl"
 ```
 
 ```
-psql   -U postgres -h localhost -p 5432 -d enhanced-riskctr -f ./manifest/migration/enhanced-riskctr.sql
+psql   -U postgres -h localhost -p 5432 -d enhanced_riskctrl -f ./manifest/migration/enhanced_riskctrl.sql
 ```

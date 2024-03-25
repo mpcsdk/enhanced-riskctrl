@@ -1,4 +1,4 @@
-module enhanced-riskctrl
+module enhanced_riskctrl
 
 go 1.15
 

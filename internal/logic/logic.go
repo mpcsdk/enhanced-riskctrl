@@ -5,5 +5,5 @@
 package logic
 
 import (
-	_ "enhanced-riskctrl/internal/logic/receiver"
+	_ "enhanced_riskctrl/internal/logic/receiver"
 )

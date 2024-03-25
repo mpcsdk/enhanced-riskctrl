@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"context"
-	"enhanced-riskctrl/internal/controller/nrpc"
-	"enhanced-riskctrl/internal/controller/query"
+	"enhanced_riskctrl/internal/controller/nrpc"
+	"enhanced_riskctrl/internal/controller/query"
 
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"

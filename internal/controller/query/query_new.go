@@ -5,7 +5,7 @@
 package query
 
 import (
-	"enhanced-riskctrl/api/query"
+	"enhanced_riskctrl/api/query"
 )
 
 type ControllerV1 struct{}

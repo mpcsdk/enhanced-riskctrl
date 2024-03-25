@@ -5,7 +5,7 @@ import (
 
 	"github.com/mpcsdk/mpcCommon/mpcdao"
 
-	v1 "enhanced-riskctrl/api/query/v1"
+	v1 "enhanced_riskctrl/api/query/v1"
 )
 
 func (c *ControllerV1) QueryCnt(ctx context.Context, req *v1.QueryCntReq) (res *v1.QueryCntRes, err error) {
