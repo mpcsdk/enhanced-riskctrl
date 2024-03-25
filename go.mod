@@ -5,6 +5,7 @@ go 1.15
 require (
 	github.com/gogf/gf/contrib/drivers/pgsql/v2 v2.6.4
 	github.com/gogf/gf/contrib/nosql/redis/v2 v2.6.4
+	github.com/gogf/gf/contrib/trace/jaeger/v2 v2.6.4
 	github.com/gogf/gf/v2 v2.6.4
 	github.com/golang/protobuf v1.5.3
 	github.com/mpcsdk/mpcCommon v0.0.0

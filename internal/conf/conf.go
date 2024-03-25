@@ -22,10 +22,17 @@ type Nrpcfg struct {
 	NatsUrl string `json:"natsUrl" v:"required"`
 }
 
+// /
+type Jaeger struct {
+	Enable bool   `json:"enable" v:"required"`
+	Url    string `json:"url" v:"required"`
+}
+
 // //
 type Cfg struct {
 	Server       *Server `json:"server" v:"required"`
 	Cache        *Cache  `json:"cache" v:"required"`
+	Jaeger       *Jaeger `json:"jaeger" v:"required"`
 	JaegerUrl    string  `json:"jaegerUrl" v:"required"`
 	Nrpc         *Nrpcfg `json:"nrpc" v:"required"`
 	Txdatarpc    string  `json:"txdatarpc" v:"required"`

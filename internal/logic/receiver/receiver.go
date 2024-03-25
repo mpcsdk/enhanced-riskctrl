@@ -47,7 +47,7 @@ func new() *sReceiver {
 		panic(err)
 	}
 
-	cons, err := nats.GetConsumer("riksctrl", mq.JetSub_ChainTx)
+	cons, err := nats.GetChainTxConsumer("riksctrl", mq.JetSub_ChainTx)
 	if err != nil {
 		panic(err)
 	}
