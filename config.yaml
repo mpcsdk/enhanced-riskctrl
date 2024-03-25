@@ -16,7 +16,6 @@ logger:
   rotateExpire: "1d"
   path: "./"
 
-userTokenUrl: "https://auth-dev.mixmarvel-sdk.com/info"
 nrpc:
   natsUrl: "127.0.0.1:4222,127.0.0.1:4211"
 database:
@@ -25,14 +24,6 @@ database:
     role: "master"
   - link: "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced_riskctrl"
     role: "slave"
-
-
-cache:
-  apiInterval: 1
-  dbCacheDuration: 100
-
-Duration: 100
-
 
 # redis 
 redis:

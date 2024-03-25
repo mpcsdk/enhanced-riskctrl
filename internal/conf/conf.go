@@ -7,10 +7,6 @@ import (
 	"github.com/gogf/gf/v2/os/gctx"
 )
 
-type Cache struct {
-	DBCacheDuration int `json:"dbCacheDuration" v:"required|min:1"`
-}
-
 type Server struct {
 	Address string `json:"address" v:"required"`
 	WorkId  int    `json:"workId" v:"required|min:1"`
@@ -29,12 +25,9 @@ type Jaeger struct {
 
 // //
 type Cfg struct {
-	Server       *Server `json:"server" v:"required"`
-	Cache        *Cache  `json:"cache" v:"required"`
-	Jaeger       *Jaeger `json:"jaeger" v:"required"`
-	JaegerUrl    string  `json:"jaegerUrl" v:"required"`
-	Nrpc         *Nrpcfg `json:"nrpc" v:"required"`
-	UserTokenUrl string  `json:"userTokenUrl" v:"required"`
+	Server *Server `json:"server" v:"required"`
+	Jaeger *Jaeger `json:"jaeger" v:"required"`
+	Nrpc   *Nrpcfg `json:"nrpc" v:"required"`
 }
 
 var Config = &Cfg{}
