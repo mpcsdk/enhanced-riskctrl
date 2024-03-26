@@ -7,8 +7,8 @@ import (
 type QueryCntReq struct {
 	g.Meta   `path:"/query" tags:"query" method:"post" summary:"You first hello api"`
 	ChainId  int64  `json:"chainId"`
-	FromAddr string `json:"fromAddr"`
-	ToAddr   string `json:"toAddr"`
+	From     string `json:"from"`
+	To       string `json:"to"`
 	Contract string `json:"contract"`
 	///
 	StartTime int64 `json:"startTime"`

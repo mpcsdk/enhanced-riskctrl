@@ -1,6 +1,6 @@
 server:
   name: "enhanced_riskctrl"
-  address:     ":8005"
+  address:     ":8000"
   workId: 1
   cpuCore: 2
   openapiPath: "/api.json"
@@ -19,7 +19,7 @@ logger:
 nrpc:
   natsUrl: "127.0.0.1:4222,127.0.0.1:4211"
 database:
-  default:
+  enhanced_riskctrl:
   - link: "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced_riskctrl"
     role: "master"
   - link: "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced_riskctrl"
@@ -27,7 +27,7 @@ database:
 
 # redis 
 redis:
-  default:
+  aggRiskCtrl:
     address: 127.0.0.1:6379
     db:      11
   cache:

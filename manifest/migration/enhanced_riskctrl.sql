@@ -21,50 +21,10 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: aggFt; Type: TABLE; Schema: public; Owner: postgres
+-- Name: chain_tx; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public."aggFt" (
-    tx_hash character varying(255) NOT NULL,
-    from_addr character varying(255) NOT NULL,
-    to_addr character varying(255) NOT NULL,
-    contract character varying(255) NOT NULL,
-    value numeric(64,0) NOT NULL,
-    start_ts bigint NOT NULL,
-    chain_id bigint NOT NULL,
-    end_ts bigint NOT NULL,
-    start_block bigint NOT NULL,
-    end_block bigint NOT NULL
-);
-
-
-ALTER TABLE public."aggFt" OWNER TO postgres;
-
---
--- Name: aggNft; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public."aggNft" (
-    tx_hash character varying(255) NOT NULL,
-    from_addr character varying(255) NOT NULL,
-    to_addr character varying(255) NOT NULL,
-    contract character varying(255) NOT NULL,
-    value bigint NOT NULL,
-    start_ts bigint NOT NULL,
-    chain_id bigint NOT NULL,
-    end_ts bigint NOT NULL,
-    start_block bigint NOT NULL,
-    end_block bigint NOT NULL
-);
-
-
-ALTER TABLE public."aggNft" OWNER TO postgres;
-
---
--- Name: chain_data; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.chain_data (
+CREATE TABLE public.chain_tx (
     chain_id bigint NOT NULL,
     height bigint NOT NULL,
     block_hash character varying(255) NOT NULL,
@@ -72,8 +32,8 @@ CREATE TABLE public.chain_data (
     tx_hash character varying(255) NOT NULL,
     tx_idx integer NOT NULL,
     log_idx integer NOT NULL,
-    from_addr character varying(255) NOT NULL,
-    to_addr character varying(255) NOT NULL,
+    "from" character varying(255) NOT NULL,
+    "to" character varying(255) NOT NULL,
     contract character varying(255) NOT NULL,
     value character varying(255) NOT NULL,
     gas character varying(255) NOT NULL,
@@ -82,48 +42,34 @@ CREATE TABLE public.chain_data (
 );
 
 
-ALTER TABLE public.chain_data OWNER TO postgres;
-
---
--- Name: chainfromcontract; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX chainfromcontract ON public."aggFt" USING btree (from_addr, contract, chain_id);
-
+ALTER TABLE public.chain_tx OWNER TO postgres;
 
 --
 -- Name: fromtscontractid; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX fromtscontractid ON public.chain_data USING btree (ts, from_addr, contract, chain_id);
+CREATE INDEX fromtscontractid ON public.chain_tx USING btree (ts, "from", contract, chain_id);
 
 
 --
 -- Name: hashtxidxlogidx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX hashtxidxlogidx ON public.chain_data USING btree (chain_id, tx_hash, tx_idx, log_idx);
-
-
---
--- Name: nftuniqe; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX nftuniqe ON public."aggNft" USING btree (from_addr, contract, chain_id);
+CREATE UNIQUE INDEX hashtxidxlogidx ON public.chain_tx USING btree (chain_id, tx_hash, tx_idx, log_idx);
 
 
 --
 -- Name: totscontractid; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX totscontractid ON public.chain_data USING btree (ts, to_addr, contract, chain_id);
+CREATE INDEX totscontractid ON public.chain_tx USING btree (ts, "to", contract, chain_id);
 
 
 --
 -- Name: tscontractid; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX tscontractid ON public.chain_data USING btree (chain_id, ts, contract);
+CREATE INDEX tscontractid ON public.chain_tx USING btree (chain_id, ts, contract);
 
 
 --

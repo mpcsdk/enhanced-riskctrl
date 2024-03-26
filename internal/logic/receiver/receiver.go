@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"enhanced_riskctrl/internal/conf"
 	"enhanced_riskctrl/internal/service"
-	"fmt"
 
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gcmd"
@@ -20,10 +19,8 @@ type sReceiver struct {
 	ctx  context.Context
 	jet  jetstream.JetStream
 	cons jetstream.Consumer
-}
-
-func AggKey(chainId int64, from, contract string) string {
-	return fmt.Sprintf("%d_%s_%s", chainId, from, contract)
+	///
+	enhanced_riskctrl *mpcdao.EnhancedRiskCtrl
 }
 
 func new() *sReceiver {
@@ -51,57 +48,47 @@ func new() *sReceiver {
 	if err != nil {
 		panic(err)
 	}
+
+	///
+	r := g.Redis("aggRiskCtrl")
+	_, err = r.Conn(gctx.GetInitCtx())
+	if err != nil {
+		panic(err)
+	}
 	///
 	s := &sReceiver{
-		ctx:  ctx,
-		jet:  jet,
-		cons: cons,
+		ctx:               ctx,
+		jet:               jet,
+		cons:              cons,
+		enhanced_riskctrl: mpcdao.NewEnhancedRiskCtrl(r),
 	}
 	///
 	///
 	cons.Consume(func(msg jetstream.Msg) {
-		tx := &entity.ChainData{}
+		tx := &entity.ChainTx{}
 		json.Unmarshal(msg.Data(), tx)
-		//based db
+		//todo: filter mpcaddr tx
 		err := mpcdao.InsertTx(ctx, tx)
+		///
 		if err != nil {
 			g.Log().Error(ctx, "insertdb :", tx, ", err:", err)
 		} else {
 			g.Log().Debug(ctx, "insertdb :", tx)
 
 			///aggval
-			err := s.aggTx(ctx, AggKey(tx.ChainId, tx.FromAddr, tx.Contract), tx)
+			err := s.enhanced_riskctrl.AggTx(ctx, tx)
 			if err != nil {
 				g.Log().Warning(ctx, "agg tx:", tx, ", err:", err)
 			}
 			g.Log().Debug(ctx, "agg tx:", tx)
 			//
 			msg.Ack()
-
 		}
 	})
 
 	///
 	return s
 }
-
-// func (s *sReceiver) runAgg() {
-// 	ticker := time.NewTicker(time.Second * 10)
-// 	go func() {
-// 		for {
-// 			select {
-// 			case <-s.ctx.Done():
-// 				return
-// 			case <-ticker.C:
-// 				//agg data
-
-// 				///
-// 				ticker.Reset(time.Second * 10)
-// 			}
-
-// 		}
-// 	}()
-// }
 
 func init() {
 	service.RegisterReceiver(new())
