@@ -12,6 +12,7 @@ import (
 
 type IQueryV1 interface {
 	QueryCnt(ctx context.Context, req *v1.QueryCntReq) (res *v1.QueryCntRes, err error)
+	QuerySum(ctx context.Context, req *v1.QuerySumReq) (res *v1.QuerySumRes, err error)
 }
 
 

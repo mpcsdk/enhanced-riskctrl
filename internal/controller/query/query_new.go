@@ -6,6 +6,8 @@ package query
 
 import (
 	"enhanced_riskctrl/api/query"
+	"enhanced_riskctrl/internal/conf"
+	"time"
 
 	"github.com/gogf/gf/v2/database/gredis"
 	"github.com/gogf/gf/v2/frame/g"
@@ -27,7 +29,7 @@ func NewV1() query.IQueryV1 {
 	}
 	return &ControllerV1{
 		redis:  r,
-		enhanced_riskctrl: mpcdao.NewEnhancedRiskCtrl(r),
+		enhanced_riskctrl: mpcdao.NewEnhancedRiskCtrl(r, time.Duration(conf.Config.Cache.Duration)),
 	}
 }
 

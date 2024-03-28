@@ -5,7 +5,7 @@ import (
 )
 
 type QueryCntReq struct {
-	g.Meta   `path:"/query" tags:"query" method:"post" summary:"You first hello api"`
+	g.Meta   `path:"/queryCnt" tags:"query" method:"post" summary:"You first hello api"`
 	ChainId  int64  `json:"chainId"`
 	From     string `json:"from"`
 	To       string `json:"to"`
@@ -21,3 +21,18 @@ type QueryCntRes struct {
 }
 
 // //
+type QuerySumReq struct {
+	g.Meta   `path:"/querySum" tags:"querySum" method:"post" summary:"You first hello api"`
+	ChainId  int64  `json:"chainId"`
+	From     string `json:"from"`
+	To       string `json:"to"`
+	Contract string `json:"contract"`
+	///
+	StartTime int64 `json:"startTime"`
+	EndTime   int64 `json:"endTime"`
+	//
+}
+type QuerySumRes struct {
+	g.Meta `mime:"text/html" example:"string"`
+	Result interface{} `json:"result"`
+}

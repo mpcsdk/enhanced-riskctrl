@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"enhanced_riskctrl/internal/conf"
 	"enhanced_riskctrl/internal/service"
+	"time"
 
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gcmd"
@@ -21,6 +22,7 @@ type sReceiver struct {
 	cons jetstream.Consumer
 	///
 	enhanced_riskctrl *mpcdao.EnhancedRiskCtrl
+	mpc               *mpcdao.MpcContext
 }
 
 func new() *sReceiver {
@@ -60,16 +62,24 @@ func new() *sReceiver {
 		ctx:               ctx,
 		jet:               jet,
 		cons:              cons,
-		enhanced_riskctrl: mpcdao.NewEnhancedRiskCtrl(r),
+		enhanced_riskctrl: mpcdao.NewEnhancedRiskCtrl(r, time.Duration(conf.Config.Cache.Duration)),
+		mpc:               mpcdao.NewMcpContet(r, time.Duration(conf.Config.Cache.Duration)),
 	}
 	///
 	///
 	cons.Consume(func(msg jetstream.Msg) {
 		tx := &entity.ChainTx{}
 		json.Unmarshal(msg.Data(), tx)
-		//todo: filter mpcaddr tx
-		err := mpcdao.InsertTx(ctx, tx)
+		// filter mpcaddr tx
+		if ok, err := s.mpc.ExistsMpcAddr(ctx, tx.From); err != nil {
+			g.Log().Error(ctx, "check mpcaddr :", tx.From, ", err:", err)
+			return
+		} else if !ok {
+			g.Log().Warning(ctx, "check mpcaddr :", tx.From, ", not exists")
+			return
+		}
 		///
+		err := s.enhanced_riskctrl.InsertTx(ctx, tx)
 		if err != nil {
 			g.Log().Error(ctx, "insertdb :", tx, ", err:", err)
 		} else {

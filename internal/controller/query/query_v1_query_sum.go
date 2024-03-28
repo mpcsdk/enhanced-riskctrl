@@ -2,7 +2,6 @@ package query
 
 import (
 	"context"
-
 	v1 "enhanced_riskctrl/api/query/v1"
 
 	"github.com/gogf/gf/v2/frame/g"
@@ -10,14 +9,14 @@ import (
 	"github.com/mpcsdk/mpcCommon/mpcdao"
 )
 
-func (c *ControllerV1) QueryCnt(ctx context.Context, req *v1.QueryCntReq) (res *v1.QueryCntRes, err error) {
+func (c *ControllerV1) QuerySum(ctx context.Context, req *v1.QuerySumReq) (res *v1.QuerySumRes, err error) {
 	///
 	if req.From == "" && req.ChainId == 0 && req.Contract == "" && req.To == "" {
 		return nil, mpccode.CodeParamInvalid()
 	}
 
 	///
-	cnt, err := c.enhanced_riskctrl.GetAggCnt(ctx, mpcdao.QueryEnhancedRiskCtrlRes{
+	cnt, err := c.enhanced_riskctrl.GetAggSum(ctx, mpcdao.QueryEnhancedRiskCtrlRes{
 		From:     req.From,
 		Contract: req.Contract,
 		ChainId:  req.ChainId,
@@ -25,9 +24,9 @@ func (c *ControllerV1) QueryCnt(ctx context.Context, req *v1.QueryCntReq) (res *
 		EndTs:    req.EndTime,
 	})
 	if err != nil {
-		g.Log().Error(ctx, "QueryCnt err:", err)
+		g.Log().Error(ctx, "QuerySum err:", err)
 	}
-	return &v1.QueryCntRes{
+	return &v1.QuerySumRes{
 		Result: cnt,
 	}, nil
 }

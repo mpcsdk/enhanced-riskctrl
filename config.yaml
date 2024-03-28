@@ -17,29 +17,26 @@ logger:
   path: "./"
 
 nrpc:
-  natsUrl: "127.0.0.1:4222,127.0.0.1:4211"
+  natsUrl: "123.60.148.168:10070"
+
 database:
   enhanced_riskctrl:
-  - link: "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced_riskctrl"
+  - link: "pgsql:postgres:123456@tcp(123.60.148.168:10100)/enhanced_riskctrl"
     role: "master"
-  - link: "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced_riskctrl"
+  - link: "pgsql:postgres:123456@tcp(123.60.148.168:10100)/enhanced_riskctrl"
     role: "slave"
+  mpc:
+  - link: "pgsql:postgres:123456@tcp(123.60.148.168:10100)/mpc"
 
+cache:
+  duration: 10000
 # redis 
 redis:
   aggRiskCtrl:
-    address: 127.0.0.1:6379
+    address: 127.0.0.1:10060
     db:      11
   cache:
-    address: 127.0.0.1:6379
+    address: 127.0.0.1:10060
     db:          2
 
 userToken: "https://auth-dev.mixmarvel-sdk.com/info"
-
-
-gfcli:
-  gen:
-    dao:
-    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/syncChain"
-      tables:   "chain_data"
-      jsonCase: "CamelLower"

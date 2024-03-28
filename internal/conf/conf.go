@@ -17,6 +17,10 @@ type Nrpcfg struct {
 	NatsUrl string `json:"natsUrl" v:"required"`
 }
 
+type Cache struct {
+	Duration int `json:"duration" v:"required|min:10000"`
+}
+
 // /
 type Jaeger struct {
 	Enable bool   `json:"enable" v:"required"`
@@ -28,6 +32,7 @@ type Cfg struct {
 	Server *Server `json:"server" v:"required"`
 	Jaeger *Jaeger `json:"jaeger" v:"required"`
 	Nrpc   *Nrpcfg `json:"nrpc" v:"required"`
+	Cache  *Cache  `json:"cache" v:"required"`
 }
 
 var Config = &Cfg{}
