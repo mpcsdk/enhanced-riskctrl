@@ -33,10 +33,10 @@ cache:
 # redis 
 redis:
   aggRiskCtrl:
-    address: 127.0.0.1:10060
+    address: 127.0.0.1:6379
     db:      11
   cache:
-    address: 127.0.0.1:10060
+    address: 127.0.0.1:6379
     db:          2
 
 userToken: "https://auth-dev.mixmarvel-sdk.com/info"

@@ -48,7 +48,7 @@ ALTER TABLE public.chain_tx OWNER TO postgres;
 -- Name: fromtscontractid; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX fromtscontractid ON public.chain_tx USING btree (ts, "from", contract, chain_id);
+CREATE INDEX fromtscontractid ON public.chain_tx USING btree (ts DESC NULLS LAST, "from", contract, chain_id);
 
 
 --
@@ -62,14 +62,14 @@ CREATE UNIQUE INDEX hashtxidxlogidx ON public.chain_tx USING btree (chain_id, tx
 -- Name: totscontractid; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX totscontractid ON public.chain_tx USING btree (ts, "to", contract, chain_id);
+CREATE INDEX totscontractid ON public.chain_tx USING btree (ts DESC NULLS LAST, "to", contract, chain_id);
 
 
 --
 -- Name: tscontractid; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX tscontractid ON public.chain_tx USING btree (chain_id, ts, contract);
+CREATE INDEX tscontractid ON public.chain_tx USING btree (chain_id, ts DESC NULLS LAST, contract);
 
 
 --
