@@ -75,7 +75,7 @@ func new() *sReceiver {
 			g.Log().Error(ctx, "check mpcaddr :", tx.From, ", err:", err)
 			return
 		} else if !ok {
-			g.Log().Warning(ctx, "check mpcaddr :", tx.From, ", not exists")
+			g.Log().Info(ctx, "check mpcaddr :", tx.From, ", not exists")
 			return
 		}
 		///
