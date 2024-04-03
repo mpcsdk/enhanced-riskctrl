@@ -30,6 +30,7 @@ database:
 
 cache:
   duration: 10000
+  retentionDataTime: "-72h"
 # redis 
 redis:
   aggRiskCtrl:

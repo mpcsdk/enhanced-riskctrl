@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"enhanced_riskctrl/internal/conf"
 	"enhanced_riskctrl/internal/service"
-	"time"
 
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gcmd"
@@ -62,8 +61,8 @@ func new() *sReceiver {
 		ctx:               ctx,
 		jet:               jet,
 		cons:              cons,
-		enhanced_riskctrl: mpcdao.NewEnhancedRiskCtrl(r, time.Duration(conf.Config.Cache.Duration)),
-		mpc:               mpcdao.NewMcpContet(r, time.Duration(conf.Config.Cache.Duration)),
+		enhanced_riskctrl: mpcdao.NewEnhancedRiskCtrl(r, conf.Config.Cache.Duration),
+		mpc:               mpcdao.NewMcpContet(r, conf.Config.Cache.Duration),
 	}
 	///
 	///

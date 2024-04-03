@@ -18,7 +18,8 @@ type Nrpcfg struct {
 }
 
 type Cache struct {
-	Duration int `json:"duration" v:"required|min:10000"`
+	Duration          int    `json:"duration" v:"required|min:10000"`
+	RetentionDataTime string `json:"retentionDataTime" v:"required"`
 }
 
 // /
