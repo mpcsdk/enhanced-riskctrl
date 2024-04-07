@@ -55,7 +55,7 @@ func (c *ControllerV1) Query(ctx context.Context, req *v1.QueryReq) (res *v1.Que
 	result, err := c.enhanced_riskctrl.Query(ctx, query)
 	if err != nil {
 		g.Log().Error(ctx, "Query err:", err)
-		return nil, mpccode.CodeParamInvalid()
+		return nil, mpccode.CodeParamInvalid(mpccode.TraceId(ctx))
 	}
 	//
 	res = &v1.QueryRes{}

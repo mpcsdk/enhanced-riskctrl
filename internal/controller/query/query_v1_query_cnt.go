@@ -27,6 +27,7 @@ func (c *ControllerV1) QueryCnt(ctx context.Context, req *v1.QueryCntReq) (res *
 	})
 	if err != nil {
 		g.Log().Error(ctx, "QueryCnt err:", err)
+		return nil, mpccode.CodeInternalError(mpccode.TraceId(ctx))
 	}
 	if cnt > 0 {
 		endts := time.Now().Add(c.retentionDataDur)
