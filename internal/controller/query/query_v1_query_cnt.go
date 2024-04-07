@@ -13,7 +13,7 @@ import (
 
 func (c *ControllerV1) QueryCnt(ctx context.Context, req *v1.QueryCntReq) (res *v1.QueryCntRes, err error) {
 	///
-	if req.From == "" && req.ChainId == 0 && req.Contract == "" && req.To == "" {
+	if req.From == "" && req.ChainId == 0 && req.Contract == "" {
 		return nil, mpccode.CodeParamInvalid()
 	}
 

@@ -8,7 +8,6 @@ type QueryCntReq struct {
 	g.Meta   `path:"/queryCnt" tags:"query" method:"post" summary:"You first hello api"`
 	ChainId  int64  `json:"chainId"`
 	From     string `json:"from"`
-	To       string `json:"to"`
 	Contract string `json:"contract"`
 	///
 	StartTime int64 `json:"startTime"`
@@ -25,7 +24,6 @@ type QuerySumReq struct {
 	g.Meta   `path:"/querySum" tags:"querySum" method:"post" summary:"You first hello api"`
 	ChainId  int64  `json:"chainId"`
 	From     string `json:"from"`
-	To       string `json:"to"`
 	Contract string `json:"contract"`
 	///
 	StartTime int64 `json:"startTime"`

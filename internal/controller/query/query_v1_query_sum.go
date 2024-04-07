@@ -12,7 +12,10 @@ import (
 
 func (c *ControllerV1) QuerySum(ctx context.Context, req *v1.QuerySumReq) (res *v1.QuerySumRes, err error) {
 	///
-	if req.From == "" && req.ChainId == 0 && req.Contract == "" && req.To == "" {
+	if req.From == "" && req.ChainId == 0 && req.Contract == "" {
+		return nil, mpccode.CodeParamInvalid()
+	}
+	if req.Contract == "" {
 		return nil, mpccode.CodeParamInvalid()
 	}
 
