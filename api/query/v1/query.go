@@ -39,9 +39,11 @@ type QuerySumRes struct {
 
 type QueryReq struct {
 	g.Meta   `path:"/query" tags:"query" method:"post" summary:"You first hello api"`
+	ChainId  int64  `json:"chainId"`
 	From     string `json:"from"`
 	To       string `json:"to"`
 	Contract string `json:"contract"`
+	Kind     string `json:"kind"`
 	///
 	StartTime int64 `json:"startTime"`
 	EndTime   int64 `json:"endTime"`

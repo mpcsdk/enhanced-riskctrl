@@ -24,6 +24,8 @@ func (c *ControllerV1) Query(ctx context.Context, req *v1.QueryReq) (res *v1.Que
 	}
 	///
 	query := &mpcdao.QueryTx{
+		ChainId: req.ChainId,
+		Kind:    req.Kind,
 		From: func() string {
 			if req.From == "" {
 				return ""
