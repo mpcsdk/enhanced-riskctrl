@@ -40,12 +40,9 @@ func new() *sReceiver {
 	}
 	///
 	nats := mq.New(conf.Config.Nrpc.NatsUrl)
-	jet, err := nats.JetStream()
-	if err != nil {
-		panic(err)
-	}
+	jet := nats.JetStream()
 
-	cons, err := nats.GetChainTxConsumer("riksctrl", mq.JetSub_ChainTx)
+	cons, err := nats.GetConsumer("riksctrl", mq.JetStream_SyncChain, mq.JetSub_SyncChainTransfer)
 	if err != nil {
 		panic(err)
 	}
