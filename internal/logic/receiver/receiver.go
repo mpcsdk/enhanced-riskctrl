@@ -81,9 +81,9 @@ func new() *sReceiver {
 			return
 		}
 		////
-		defer msg.Ack()
 		if !ok {
 			g.Log().Debug(ctx, "check mpcaddr:", tx.From, ", not exists")
+			msg.Ack()
 			return
 		}
 		///
@@ -99,6 +99,7 @@ func new() *sReceiver {
 			g.Log().Fatal(ctx, "agg tx:", tx, ", err:", err)
 		}
 		g.Log().Info(ctx, "check mpcaddr record:", tx.From, tx.ChainId, tx.Height)
+		msg.Ack()
 		//
 	})
 
