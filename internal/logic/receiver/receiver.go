@@ -68,12 +68,13 @@ func new() *sReceiver {
 		json.Unmarshal(msg.Data(), tx)
 		// filter mpcaddr tx
 		if ok, err := s.mpc.ExistsMpcAddr(ctx, tx.From); err != nil {
-			g.Log().Error(ctx, "check mpcaddr :", tx.From, ", err:", err)
+			g.Log().Error(ctx, "check mpcaddr:", tx.From, ", err:", err)
 			return
 		} else if !ok {
-			g.Log().Info(ctx, "check mpcaddr :", tx.From, ", not exists")
+			g.Log().Debug(ctx, "check mpcaddr:", tx.From, ", not exists", "chain:", tx.ChainId, "block:", tx.Height)
 			return
 		}
+		g.Log().Notice(ctx, "check mpcaddr:", tx.From)
 		///
 		err := s.enhanced_riskctrl.InsertTx(ctx, tx)
 		if err != nil {
