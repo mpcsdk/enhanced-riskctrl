@@ -19,3 +19,4 @@ bin
 **/config/config.yaml
 *.log
 enhanced_riskctrl
+__debug*
