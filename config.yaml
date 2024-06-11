@@ -39,7 +39,7 @@ redis:
   cache:
     address: 127.0.0.1:6379
     db:          2
-  aggRiskCtrl:
+  aggTx:
     address: 127.0.0.1:6379
     db:      11
 
