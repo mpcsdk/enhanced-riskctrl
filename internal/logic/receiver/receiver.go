@@ -48,7 +48,12 @@ func new() *sReceiver {
 	}
 
 	///
-	r := g.Redis("aggRiskCtrl")
+	r := g.Redis()
+	_, err = r.Conn(gctx.GetInitCtx())
+	if err != nil {
+		panic(err)
+	}
+	redisAggTx := g.Redis("aggTx")
 	_, err = r.Conn(gctx.GetInitCtx())
 	if err != nil {
 		panic(err)
@@ -58,7 +63,7 @@ func new() *sReceiver {
 		ctx:               ctx,
 		jet:               jet,
 		cons:              cons,
-		enhanced_riskctrl: mpcdao.NewEnhancedRiskCtrl(r, conf.Config.Cache.Duration),
+		enhanced_riskctrl: mpcdao.NewEnhancedRiskCtrl(redisAggTx, -1),
 		mpc:               mpcdao.NewMcpContet(r, conf.Config.Cache.Duration),
 	}
 	///
@@ -66,31 +71,37 @@ func new() *sReceiver {
 	cons.Consume(func(msg jetstream.Msg) {
 		tx := &entity.ChainTx{}
 		json.Unmarshal(msg.Data(), tx)
+
+		g.Log().Debug(ctx, "enhancedtx:", tx)
 		// filter mpcaddr tx
-		if ok, err := s.mpc.ExistsMpcAddr(ctx, tx.From); err != nil {
+		ok := false
+		var err error
+		if ok, err = s.mpc.ExistsWalletAddr(ctx, tx.From); err != nil {
 			g.Log().Error(ctx, "check mpcaddr:", tx.From, ", err:", err)
 			return
-		} else if !ok {
-			g.Log().Debug(ctx, "check mpcaddr:", tx.From, ", not exists", "chain:", tx.ChainId, "block:", tx.Height)
+		}
+		////
+		if !ok {
+			g.Log().Debug(ctx, "check mpcaddr:", tx.From, ", not exists")
+			msg.Ack()
 			return
 		}
 		g.Log().Notice(ctx, "check mpcaddr:", tx.From)
 		///
-		err := s.enhanced_riskctrl.InsertTx(ctx, tx)
+		err = s.enhanced_riskctrl.InsertTx(ctx, tx)
 		if err != nil {
 			g.Log().Error(ctx, "insertdb :", tx, ", err:", err)
-		} else {
-			g.Log().Debug(ctx, "insertdb :", tx)
-
-			///aggval
-			err := s.enhanced_riskctrl.AggTx(ctx, tx)
-			if err != nil {
-				g.Log().Warning(ctx, "agg tx:", tx, ", err:", err)
-			}
-			g.Log().Debug(ctx, "agg tx:", tx)
-			//
-			msg.Ack()
 		}
+		g.Log().Debug(ctx, "insertdb :", tx)
+
+		///aggval
+		err = s.enhanced_riskctrl.AggTx(ctx, tx)
+		if err != nil {
+			g.Log().Fatal(ctx, "agg tx:", tx, ", err:", err)
+		}
+		g.Log().Info(ctx, "check mpcaddr record:", tx.From, tx.ChainId, tx.Height)
+		msg.Ack()
+		//
 	})
 
 	///

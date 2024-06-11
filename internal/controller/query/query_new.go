@@ -33,7 +33,7 @@ func NewV1() query.IQueryV1 {
 	}
 	
 	///
-	r := g.Redis("aggRiskCtrl")
+	r := g.Redis()
 	_, err = r.Conn(gctx.GetInitCtx())
 	if err != nil {
 		panic(err)
