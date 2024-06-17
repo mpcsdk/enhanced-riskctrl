@@ -22,10 +22,10 @@ func (c *ControllerV1) Query(ctx context.Context, req *v1.QueryReq) (res *v1.Que
 	if req.Page < 0 || req.PageSize < 0 {
 		return nil, mpccode.CodeParamInvalid("page or pageSize invalid")
 	}
+
 	///
 	query := &mpcdao.QueryTx{
 		ChainId: req.ChainId,
-		Kind:    req.Kind,
 		From: func() string {
 			if req.From == "" {
 				return ""
@@ -54,6 +54,15 @@ func (c *ControllerV1) Query(ctx context.Context, req *v1.QueryReq) (res *v1.Que
 		Page:     req.Page,
 		PageSize: req.PageSize,
 	}
+	/////query kind
+	if req.Kind == "token" {
+		query.Kinds = []string{"erc20", "external"}
+	} else if req.Kind == "nft" {
+		query.Kinds = []string{"erc721", "erc1155"}
+	} else {
+		query.Kinds = []string{"external", "erc20", "erc721", "erc1155"}
+	}
+	////
 	result, err := c.enhanced_riskctrl.Query(ctx, query)
 	if err != nil {
 		g.Log().Error(ctx, "Query err:", err)
