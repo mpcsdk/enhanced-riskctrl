@@ -54,7 +54,7 @@ func new() *sReceiver {
 	nats := mq.New(conf.Config.Nrpc.NatsUrl)
 	jet := nats.JetStream()
 
-	cons, err := nats.GetConsumer("riksctrl", mq.JetStream_SyncChain, mq.JetSub_SyncChainTransfer)
+	cons, err := nats.GetConsumer("enhanced_riksctrl", mq.JetStream_SyncChain, mq.JetSub_SyncChainTransfer_Latest)
 	if err != nil {
 		panic(err)
 	}
@@ -88,7 +88,7 @@ func new() *sReceiver {
 		// filter mpcaddr tx
 		ok := false
 		var err error
-		if ok, err = s.mpc.ExistsWalletAddr(ctx, tx.From); err != nil {
+		if ok, err = s.mpc.ExistsWalletAddr(ctx, tx.From, tx.ChainId); err != nil {
 			g.Log().Error(ctx, "check mpcaddr:", tx.From, ", err:", err)
 			return
 		}
@@ -98,7 +98,7 @@ func new() *sReceiver {
 			msg.Ack()
 			return
 		}
-		g.Log().Notice(ctx, "check mpcaddr:", tx.From)
+		g.Log().Info(ctx, "check mpcaddr:", tx.From)
 		///
 		err = s.enhanced_riskctrl.InsertTx(ctx, tx)
 		if err != nil {
@@ -115,7 +115,7 @@ func new() *sReceiver {
 			}
 		}
 
-		g.Log().Info(ctx, "check mpcaddr record:", tx.From, tx.ChainId, tx.Height)
+		g.Log().Notice(ctx, "check mpcaddr record:", tx.From, tx.ChainId, tx.Height, tx)
 		msg.Ack()
 		//
 	})
