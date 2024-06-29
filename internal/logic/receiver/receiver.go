@@ -5,11 +5,13 @@ import (
 	"encoding/json"
 	"enhanced_riskctrl/internal/conf"
 	"enhanced_riskctrl/internal/service"
+	"time"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gcmd"
 	"github.com/gogf/gf/v2/os/gctx"
+	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/lib/pq"
 	"github.com/mpcsdk/mpcCommon/mpcdao"
 	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
@@ -36,25 +38,20 @@ func isDuplicateKeyErr(err error) bool {
 	return false
 }
 
+var zeroAddr common.Address
+
 func new() *sReceiver {
 
 	ctx := gctx.GetInitCtx()
-	p, err := gcmd.Parse(g.MapStrBool{
-		"s,sync": false,
-	})
+	retention, err := gtime.ParseDuration(conf.Config.Cache.RetentionDataTime)
 	if err != nil {
 		panic(err)
-	}
-	////
-	if p.GetOpt("sync") == nil {
-		g.Log().Notice(ctx, "no sync tx")
-		return &sReceiver{}
 	}
 	///
 	nats := mq.New(conf.Config.Nrpc.NatsUrl)
 	jet := nats.JetStream()
 
-	cons, err := nats.GetConsumer("riksctrl", mq.JetStream_SyncChain, mq.JetSub_SyncChainTransfer)
+	cons, err := nats.GetConsumer("enhanced_riksctrl", mq.JetStream_SyncChain, mq.JetSub_SyncChainTransfer_Latest)
 	if err != nil {
 		panic(err)
 	}
@@ -84,18 +81,22 @@ func new() *sReceiver {
 		tx := &entity.ChainTx{}
 		json.Unmarshal(msg.Data(), tx)
 
+		defer msg.Ack()
 		g.Log().Debug(ctx, "enhancedtx:", tx)
+		if tx.From == zeroAddr.String() {
+			g.Log().Debug(ctx, "0 fromaddr:", tx)
+			return
+		}
 		// filter mpcaddr tx
 		ok := false
 		var err error
-		if ok, err = s.mpc.ExistsWalletAddr(ctx, tx.From); err != nil {
+		if ok, err = s.mpc.ExistsWalletAddr(ctx, tx.From, tx.ChainId); err != nil {
 			g.Log().Error(ctx, "check mpcaddr:", tx.From, ", err:", err)
 			return
 		}
 		////
 		if !ok {
 			g.Log().Debug(ctx, "check mpcaddr:", tx.From, ", not exists")
-			msg.Ack()
 			return
 		}
 		g.Log().Notice(ctx, "check mpcaddr:", tx.From)
@@ -116,8 +117,18 @@ func new() *sReceiver {
 		}
 
 		g.Log().Info(ctx, "check mpcaddr record:", tx.From, tx.ChainId, tx.Height)
-		msg.Ack()
-		//
+		//clear aggcache
+		endts := time.Now().Add(retention)
+		err = s.enhanced_riskctrl.Clear(ctx, mpcdao.QueryEnhancedRiskCtrlRes{
+			From:     tx.From,
+			Contract: tx.Contract,
+			ChainId:  tx.ChainId,
+			StartTs:  0,
+			EndTs:    endts.Unix(),
+		})
+		if err != nil {
+			g.Log().Error(ctx, "QuerySum err:", err)
+		}
 	})
 
 	///
