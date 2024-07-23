@@ -54,3 +54,12 @@ type QueryRes struct {
 	g.Meta `mime:"text/html" example:"string"`
 	Result interface{} `json:"result"`
 }
+
+// //
+type StateReq struct {
+	g.Meta `path:"/state" tags:"state" method:"post" summary:"You first hello api"`
+}
+type StateRes struct {
+	g.Meta `mime:"text/html" example:"string"`
+	Result interface{} `json:"result"`
+}
