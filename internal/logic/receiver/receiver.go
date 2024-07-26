@@ -106,13 +106,15 @@ func new() *sReceiver {
 			if isDuplicateKeyErr(err) {
 				g.Log().Warning(ctx, "insertdb isDuplicateKeyErr:", tx, ", err:", err)
 			} else {
-				g.Log().Fatal(ctx, "insertdb:", tx, ", err:", err)
+				g.Log().Error(ctx, "insertdb:", tx, ", err:", err)
+				panic(err)
 			}
 		} else {
 			///aggval
 			err = s.enhanced_riskctrl.AggTx(ctx, tx)
 			if err != nil {
-				g.Log().Fatal(ctx, "agg tx:", tx, ", err:", err)
+				g.Log().Error(ctx, "agg tx:", tx, ", err:", err)
+				panic(err)
 			}
 		}
 
